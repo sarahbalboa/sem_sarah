@@ -1,4 +1,4 @@
-Sara's Repository for SEM
+Sara's Repository for SEM.
 
 ![workflow](https://github.com/40511028/SEM_GROUP22/actions/workflows/main.yml/badge.svg)
 [![Releases](https://img.shields.io/github/release/sarahbalboa/sem_sarah/all.svg?style=flat-square)](https://github.com/40511028/SEM_GROUP22/releases)
