@@ -6,4 +6,4 @@ License: [![LICENSE](https://img.shields.io/github/license/sarahbalboa/sem.svg?s
 Release: [![Releases](https://img.shields.io/github/release/sarahbalboa/sem/all.svg?style=flat-square)](https://github.com/sarahbalboa/sem/releases) <br />
 Master Build status: ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/sarahbalboa/SEM_sarah/A%20workflow%20for%20my%20Hello%20World%20App/master?style=flat-square) <br />
 Develop Build status:![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/sarahbalboa/SEM_sarah/A%20workflow%20for%20my%20Hello%20World%20App/develop?style=flat-square) <br />
-checking last changes...
+1- Run mongo db-server 2-Run jar_dep_connect.
