@@ -70,7 +70,7 @@ public class App
     }
     public static void main(String[] args)
     {
-        try
+        /*try
         {
             // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -121,8 +121,8 @@ public class App
             {
                 System.out.println("Error closing connection to database");
             }
-        }
-        /*
+        }*/
+
 
 
         // Create new Application
@@ -132,6 +132,6 @@ public class App
         a.connect();
 
         // Disconnect from database
-        a.disconnect();*/
+        a.disconnect();
     }
 }
