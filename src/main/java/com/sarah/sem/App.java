@@ -1,29 +1,234 @@
 package com.sarah.sem;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
+
+import java.sql.*;
 
 public class App
 {
+    /**
+     * Connection to MySQL database.
+     */
+    private Connection con = null;
+
+    /**
+     * Connect to the MySQL database.
+     */
+    public void connect()
+    {
+        try
+        {
+            // Load Database driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        }
+        catch (ClassNotFoundException e)
+        {
+            System.out.println("Could not load SQL driver");
+            System.exit(-1);
+        }
+
+        int retries = 10;
+        for (int i = 0; i < retries; ++i)
+        {
+            System.out.println("Connecting to database...");
+            try
+            {
+                // Wait a bit for db to start
+                Thread.sleep(30000);
+                // Connect to database ___________> change to db:3306 localhost:33060
+                con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
+                System.out.println("Successfully connected");
+                break;
+            }
+            catch (SQLException sqle)
+            {
+                System.out.println("Failed to connect to database attempt " + Integer.toString(i));
+                System.out.println(sqle.getMessage());
+            }
+            catch (InterruptedException ie)
+            {
+                System.out.println("Thread interrupted? Should not happen.");
+            }
+        }
+    }
+
+    /**
+     * Disconnect from the MySQL database.
+     */
+    public void disconnect()
+    {
+        if (con != null)
+        {
+            try
+            {
+                // Close connection
+                con.close();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Error closing connection to database");
+            }
+        }
+    }
+
+    public Employee getEmployee(int ID, String date)
+    {
+        try
+        {
+            // Create an SQL statement
+            Statement stmt = con.createStatement();
+            Statement stmt2 = con.createStatement();
+            Statement stmt3 = con.createStatement();
+            Statement stmt4 = con.createStatement();
+            Statement stmt5 = con.createStatement();
+
+            // Create string for SQL statement
+            String strSelect =
+                    "SELECT emp_no, first_name, last_name "
+                            + "FROM employees "
+                            + "WHERE emp_no = " + ID;
+            String strSelectTitle =
+                    "SELECT title "
+                            + "FROM titles "
+                            + "WHERE emp_no = " + ID + " AND to_date = '" + date + "';";
+            String strSelectDep =
+                    "SELECT dept_name FROM " +
+                            "departments JOIN dept_emp ON departments.dept_no = dept_emp.dept_no " +
+                            "WHERE emp_no = " + ID + " AND to_date = '" + date + "';";
+            String strSelectSalary =
+                    "SELECT salary "
+                            + "FROM salaries "
+                            + "WHERE emp_no = " + ID + " AND to_date = '" + date + "';";
+
+            //job title, salary, department, and manager
+            // Execute SQL statement
+            ResultSet rset = stmt.executeQuery(strSelect);
+            ResultSet rset2 = stmt2.executeQuery(strSelectTitle);
+            ResultSet rset3 = stmt3.executeQuery(strSelectDep);
+            ResultSet rset4 = stmt4.executeQuery(strSelectSalary);
+
+            // Return new employee if valid.
+            // Check one is returned
+            if (rset.next() && rset2.next() && rset3.next()&& rset4.next())
+            {
+                Employee emp = new Employee();
+                emp.emp_no = rset.getInt("emp_no");
+                emp.first_name = rset.getString("first_name");
+                emp.last_name = rset.getString("last_name");
+                emp.title = rset2.getString("title");
+                emp.dept_name = rset3.getString("dept_name");
+                emp.salary = rset4.getInt("salary");
+                emp.salary = rset4.getInt("salary");
+
+                return emp;
+            }
+            else if(rset.next() && rset2.next() && rset3.next() && rset4.next())
+            {
+                Employee emp = new Employee();
+                emp.emp_no = rset.getInt("emp_no");
+                emp.first_name = rset.getString("first_name");
+                emp.last_name = rset.getString("last_name");
+                emp.title = rset2.getString("title");
+                emp.dept_name = rset3.getString("dept_name");
+                emp.salary = rset4.getInt("salary");
+
+                return emp;
+            }
+            else
+                return null;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get employee details");
+            return null;
+        }
+    }
+
+    //displau employee method
+    public void displayEmployee(Employee emp)
+    {
+        if (emp != null)
+        {
+            System.out.println(
+                    emp.emp_no + " "
+                            + emp.first_name + " "
+                            + emp.last_name + "\n"
+                            + emp.title + "\n"
+                            + "Salary:" + emp.salary + "\n"
+                            + emp.dept_name);
+        }
+
+    }
+    //get manager ID with the employees department name and teh last date
+    public int getMangerID(String deptName, String date) {
+
+        try
+        {
+            // Create an SQL statement
+            Statement stmt6 = con.createStatement();
+
+            // Create string for SQL statement
+            String strSelectManagerName =
+                "SELECT emp_no FROM dept_manager " +
+                        "JOIN departments ON dept_manager.dept_no = departments.dept_no " +
+                        "WHERE dept_name = '"+ deptName + "' AND to_date = '" + date + "';";
+
+            // Execute SQL statement
+            ResultSet rset = stmt6.executeQuery(strSelectManagerName);
+
+            // Return new employee if valid.
+            // Check one is returned
+            if (rset.next())
+            {
+                Employee manag = new Employee();
+                manag.emp_no = rset.getInt("emp_no");
+
+                return manag.emp_no;
+            }
+            else
+                return 0;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get manager details");
+            return 0;
+        }
+    }
+
+    //display manager method
+    public void displayManager(Employee manag)
+    {
+        if (manag != null)
+        {
+            System.out.println("Manager: "
+                            + manag.first_name + " " + manag.last_name + "\n");
+        }
+    }
+
     public static void main(String[] args)
     {
-        // Connect to MongoDB
-        MongoClient mongoClient = new MongoClient("mongo-dbserver");
-        // Get a database - will create when we use it
-        MongoDatabase database = mongoClient.getDatabase("mydb");
-        // Get a collection from the database
-        MongoCollection<Document> collection = database.getCollection("test");
-        // Create a document to store
-        Document doc = new Document("name", "Kevin Sim")
-                .append("class", "Software Engineering Methods")
-                .append("year", "2021")
-                .append("result", new Document("CW", 95).append("EX", 85));
-        // Add document to collection
-        collection.insertOne(doc);
+        // Create new Application
+        App a = new App();
 
-        // Check document in collection
-        Document myDoc = collection.find().first();
-        System.out.println(myDoc.toJson());
+        // Connect to database
+        a.connect();
+
+        //date
+        String date = "9999-01-01";
+
+        // Get Employee
+        Employee emp = a.getEmployee(255530, date);
+        // Display results
+
+        a.displayEmployee(emp);
+
+        //get manager from the employees department ------------------
+        String department = emp.dept_name; //department
+        int managerID = a.getMangerID(department,date); //manager ID
+        Employee manager = a.getEmployee(managerID, date); //manager name
+        a.displayManager(manager); //display manager
+
+        // Disconnect from database
+        a.disconnect();
     }
 }
