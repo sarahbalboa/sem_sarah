@@ -48,7 +48,8 @@ A view request for an employee's details to support of the employee's promotion 
     2. HR advisor asks for correct employee's name.
    
 2. **Employee's details are not available**:
-   1.  HR advisor informs the company that the employee details are not available.
+   1. HR advisor informs the company that the employee details are not available.
+   2. HR advisor adds employees details
 
 ## SUB-VARIATIONS
 

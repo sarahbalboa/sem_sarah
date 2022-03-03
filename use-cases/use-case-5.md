@@ -36,7 +36,7 @@ A request for adding a new employee's details is sent to an HR Advisor.
 
 ## MAIN SUCCESS SCENARIO
 
-1. Request of adding a new employee to the database and heir details are given.
+1. Request of adding a new employee to the database and their details are given.
 2. HR advisor captures employee's details.
 3. HR advisor adds the employee's details to the database.
 4. New employee can be paid.
