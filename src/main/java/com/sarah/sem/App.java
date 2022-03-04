@@ -274,7 +274,6 @@ public class App
                 emp.first_name = rset.getString("employees.first_name");
                 emp.last_name = rset.getString("employees.last_name");
                 emp.salary = rset.getInt("salaries.salary");
-                emp.title = rset.getString("titles.title");
                 employees.add(emp);
             }
             return employees;
