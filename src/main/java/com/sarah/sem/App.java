@@ -339,7 +339,6 @@ public class App
         ArrayList<Employee> employees = a.getEmployeeSalaryRole(role);
 
         a.printSalaries(employees);
-        System.out.println("Updated");
 
 
         // Disconnect from database
