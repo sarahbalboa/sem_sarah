@@ -170,9 +170,9 @@ public class App
 
             // Create string for SQL statement
             String strSelectManagerName =
-                "SELECT emp_no FROM dept_manager " +
-                        "JOIN departments ON dept_manager.dept_no = departments.dept_no " +
-                        "WHERE dept_name = '"+ deptName + "' AND to_date = '" + date + "';";
+                    "SELECT emp_no FROM dept_manager " +
+                            "JOIN departments ON dept_manager.dept_no = departments.dept_no " +
+                            "WHERE dept_name = '"+ deptName + "' AND to_date = '" + date + "';";
 
             // Execute SQL statement
             ResultSet rset = stmt6.executeQuery(strSelectManagerName);
@@ -203,7 +203,7 @@ public class App
         if (manag != null)
         {
             System.out.println("Manager: "
-                            + manag.first_name + " " + manag.last_name + "\n");
+                    + manag.first_name + " " + manag.last_name + "\n");
         }
     }
 
@@ -314,13 +314,10 @@ public class App
         /* ------------------- Issue #6 -----------
         //date
         String date = "9999-01-01";
-
         // Get Employee
         Employee emp = a.getEmployee(255530, date);
         // Display results
-
         a.displayEmployee(emp);
-
         //get manager from the employees department ------------------
         String department = emp.dept_name; //department
         int managerID = a.getMangerID(department,date); //manager ID
@@ -330,7 +327,6 @@ public class App
 
         /* -------------------------Issue #1 ----------------
         ArrayList<Employee> employees = a.getAllSalaries();
-
         // Test the size of the returned data - should be 240124
         System.out.println(employees.size());
         */
