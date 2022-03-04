@@ -144,6 +144,7 @@ public class App
         }
     }
 
+
     //displau employee method
     public void displayEmployee(Employee emp)
     {
@@ -245,6 +246,46 @@ public class App
         }
     }
 
+    public ArrayList<Employee> getEmployeeSalaryRole(String role)
+    {
+
+        try
+        {
+            // Create an SQL statement
+            Statement stmt = con.createStatement();
+            // Create string for SQL statement
+            String strSelect =
+                    "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary, titles.title "
+                            + "FROM employees, salaries, titles "
+                            + "WHERE employees.emp_no = salaries.emp_no "
+                            + "AND employees.emp_no = titles.emp_no "
+                            + "AND salaries.to_date = '9999-01-01' "
+                            + "AND titles.to_date = '9999-01-01' "
+                            + "AND titles.title LIKE 'Engineer'"
+                            + " ORDER BY employees.emp_no ASC";
+            // Execute SQL statement
+            ResultSet rset = stmt.executeQuery(strSelect);
+            // Extract employee information
+            ArrayList<Employee> employees = new ArrayList<Employee>();
+            while (rset.next())
+            {
+                Employee emp = new Employee();
+                emp.emp_no = rset.getInt("employees.emp_no");
+                emp.first_name = rset.getString("employees.first_name");
+                emp.last_name = rset.getString("employees.last_name");
+                emp.salary = rset.getInt("salaries.salary");
+                emp.title = rset.getString("titles.title");
+                employees.add(emp);
+            }
+            return employees;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get salary details");
+            return null;
+        }
+    }
     /**
      * Prints a list of employees.
      * @param employees The list of employees to print.
@@ -252,7 +293,7 @@ public class App
     public void printSalaries(ArrayList<Employee> employees)
     {
         // Print header
-        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
+        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary", "Title"));
         // Loop over all employees in the list
         for (Employee emp : employees)
         {
@@ -287,11 +328,15 @@ public class App
         a.displayManager(manager); //display manager
         */
 
-        // -------------------------Issue #1 ----------------
+        /* -------------------------Issue #1 ----------------
         ArrayList<Employee> employees = a.getAllSalaries();
 
         // Test the size of the returned data - should be 240124
         System.out.println(employees.size());
+        */
+        // ----------------------- Issue #4 ---------------
+        String role = "Engineer";
+        ArrayList<Employee> employees = a.getEmployeeSalaryRole(role);
 
         a.printSalaries(employees);
 
