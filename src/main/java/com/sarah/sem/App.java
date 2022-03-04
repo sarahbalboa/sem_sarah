@@ -246,7 +246,7 @@ public class App
         }
     }
 
-    public ArrayList<Employee> getEmployeeSalaryRole(String role)
+    public ArrayList<Employee> getEmployeeSalaryRole()
     {
 
         try
@@ -255,7 +255,7 @@ public class App
             Statement stmt = con.createStatement();
             // Create string for SQL statement
             String strSelect =
-                    "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary, titles.title "
+                    "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary "
                             + "FROM employees, salaries, titles "
                             + "WHERE employees.emp_no = salaries.emp_no "
                             + "AND employees.emp_no = titles.emp_no "
@@ -293,7 +293,7 @@ public class App
     public void printSalaries(ArrayList<Employee> employees)
     {
         // Print header
-        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary", "Title"));
+        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
         // Loop over all employees in the list
         for (Employee emp : employees)
         {
@@ -331,8 +331,8 @@ public class App
         System.out.println(employees.size());
         */
         // ----------------------- Issue #4 ---------------
-        String role = "Engineer";
-        ArrayList<Employee> employees = a.getEmployeeSalaryRole(role);
+
+        ArrayList<Employee> employees = a.getEmployeeSalaryRole();
 
         a.printSalaries(employees);
 
