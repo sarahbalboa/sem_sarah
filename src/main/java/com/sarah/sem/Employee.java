@@ -1,6 +1,10 @@
 package com.sarah.sem;
 
-public class Employee {
+/**
+ * Represents an employee
+ */
+public class Employee
+{
     /**
      * Employee number
      */
@@ -35,5 +39,4 @@ public class Employee {
      * Employee's manager
      */
     public String manager;
-
 }
