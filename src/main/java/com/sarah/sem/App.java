@@ -88,6 +88,8 @@ public class App {
             ResultSet rset3 = stmt3.executeQuery(strSelectDep);
             ResultSet rset4 = stmt4.executeQuery(strSelectSalary);
 
+            Department dept = new Department();
+
             // Return new employee if valid.
             // Check one is returned
             if (rset.next() && rset2.next() && rset3.next() && rset4.next()) {
@@ -96,18 +98,21 @@ public class App {
                 emp.first_name = rset.getString("first_name");
                 emp.last_name = rset.getString("last_name");
                 emp.title = rset2.getString("title");
-                emp.dept = (Department) rset3.getObject("dept_name");
-                emp.salary = rset4.getInt("salary");
+                dept.dept_name = rset3.getString("dept_name");
+                emp.dept = dept;
                 emp.salary = rset4.getInt("salary");
 
                 return emp;
             } else if (rset.next() && rset2.next() && rset3.next() && rset4.next()) {
                 Employee emp = new Employee();
+
                 emp.emp_no = rset.getInt("emp_no");
                 emp.first_name = rset.getString("first_name");
                 emp.last_name = rset.getString("last_name");
                 emp.title = rset2.getString("title");
-                emp.dept = (Department) rset3.getObject("dept_name");
+                //emp.dept = (Department) rset3.getObject("dept_name");
+                dept.dept_name = rset3.getString("dept_name");
+                emp.dept = dept;
                 emp.salary = rset4.getInt("salary");
 
                 return emp;
@@ -124,14 +129,20 @@ public class App {
     //displau employee method
     public void displayEmployee(Employee emp) {
         if (emp != null) {
+
+
             System.out.println(
                     emp.emp_no + " "
                             + emp.first_name + " "
                             + emp.last_name + "\n"
                             + emp.title + "\n"
                             + "Salary:" + emp.salary + "\n"
-                            + emp.dept);
+                            + emp.dept.dept_name);
         }
+        else {
+            System.out.println("Employee is empty");
+        }
+
 
     }
 
@@ -251,10 +262,19 @@ public class App {
      * @param employees The list of employees to print.
      */
     public void printSalaries(ArrayList<Employee> employees) {
+        // Check employees is not null
+        if (employees == null)
+        {
+            System.out.println("No employees");
+            return;
+        }
         // Print header
         System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
         // Loop over all employees in the list
         for (Employee emp : employees) {
+
+            if (emp == null)
+                continue;
             String emp_string =
                     String.format("%-10s %-15s %-20s %-8s",
                             emp.emp_no, emp.first_name, emp.last_name, emp.salary);
@@ -269,32 +289,35 @@ public class App {
         // Connect to database
         a.connect();
 
-        /* ------------------- Issue #6 -----------
+        // ------------------- Issue #6 -----------
         //date
         String date = "9999-01-01";
+        Department dept = new Department();
+        String department = "Engineer";
+        dept.dept_name = department;
         // Get Employee
         Employee emp = a.getEmployee(255530, date);
         // Display results
         a.displayEmployee(emp);
-        //get manager from the employees department ------------------
-        String department = emp.dept_name; //department
+        /*get manager from the employees department ------------------
+        String department = emp.dept.dept_name; //department
         int managerID = a.getMangerID(department,date); //manager ID
         Employee manager = a.getEmployee(managerID, date); //manager name
-        a.displayManager(manager); //display manager
-        */
+        a.displayManager(manager); //display manager*/
+
 
         /* -------------------------Issue #1 ----------------
         ArrayList<Employee> employees = a.getAllSalaries();
         // Test the size of the returned data - should be 240124
         System.out.println(employees.size());
         */
-        // ----------------------- Issue #4 ---------------
+        /* ----------------------- Issue #4 ---------------
 
         ArrayList<Employee> employees = a.getEmployeeSalaryRole();
 
         a.printSalaries(employees);
 
-
+        */
         // Disconnect from database
         a.disconnect();
     }
