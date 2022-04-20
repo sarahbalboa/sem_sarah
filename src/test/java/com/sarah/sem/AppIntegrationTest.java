@@ -21,11 +21,11 @@ public class AppIntegrationTest
     }
 
     @Test
-    void testGetEmployee()
+    void testGetEmployeeTest()
     {
         Employee emp = app.getEmployee(255530, "9999-01-01");
         assertEquals(emp.emp_no, 255530);
         assertEquals(emp.first_name, "Ronghao");
-        assertEquals(emp.last_name, "Garigliano");
+        assertEquals(emp.last_name, "Garigliano", "Test ");
     }
 }
